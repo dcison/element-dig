@@ -1,12 +1,7 @@
 ---
+author: Dcison
 name: 元素埋点曝光组件
 ---
-
-``` javascript
-import { Playground } from 'docz';
-import Exposure,{initDig} from '../src/index';
-```
-
 
 # 元素埋点曝光组件
 
