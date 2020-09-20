@@ -2,8 +2,11 @@
 name: 元素埋点曝光组件
 ---
 
+``` javascript
 import { Playground } from 'docz';
 import Exposure,{initDig} from '../src/index';
+```
+
 
 # 元素埋点曝光组件
 
@@ -39,7 +42,8 @@ Chrome | Firefox | Safari | Edge | IE | Opera | Android
 ## 使用
 
 ### 引入组件
-``` js
+
+``` javascript
 import Exposure from './index';
 ```
 
@@ -47,34 +51,21 @@ import Exposure from './index';
 
 需要在使用该组件前，为组件进行初始化，主要是传入本项目中的发送埋点函数，因为各个项目的函数发送方式不一样，因此交由使用方自行初始化控制
 
-<Playground>
-    {
-        () => {
-            initDig((evt,parmas,action)=>{
-                console.log(
-                        `打印出参数：%c evt=${evt} %c parmas=${JSON.stringify(parmas)} %c action=${JSON.stringify(action)}`,
-                        'color:#99CCCC;font-size: 16px;',
-                        'color:#FFCC99;font-size: 16px;',
-                        'color:#CCCCFF;font-size: 16px;',
-                )
-            })
-            return <div>
-                <h1>初始化埋点发送函数</h1>
-                <p>
-                    import {'{' } initDig {'}'} from './index.js'; <br />
-                    initDig(send) // send函数参考下方代码
-                </p>
-                <p>
-                    埋点自动函数必须基于下述代码（send函数）
-                </p>
-            </div>
-        }
-    }
-</Playground>
+``` javascript
+import { initDig } from './index.js';
+initDig((evt,parmas,action)=>{
+    console.log(
+            `打印出参数：%c evt=${evt} %c parmas=${JSON.stringify(parmas)} %c action=${JSON.stringify(action)}`,
+            'color:#99CCCC;font-size: 16px;',
+            'color:#FFCC99;font-size: 16px;',
+            'color:#CCCCFF;font-size: 16px;',
+    )
+})
+```
 
 **参考的send代码**
 
-```javascript
+``` javascript
 send(evtId, evtParams = {}, sourceParams = {}) { // 通用发送埋点请求
     // evt:事件ID（evt_ID）,evtParams 埋点中除了pid、action的字段，sourceParams  埋点参数中的action字段
     window.send(evtId, this.getAllParams(evtParams, sourceParams)); // window.send 是真正发埋点的函数
@@ -109,7 +100,7 @@ getAllParams(evtParams = {}, sourceParams = {}) {
 
 说明：只要加载该元素即对该元素进行曝光
 
-<Playground>
+``` javascript
     <Exposure 
         digData={{
             evt: 200000,
@@ -124,34 +115,30 @@ getAllParams(evtParams = {}, sourceParams = {}) {
     >
         此处放入将被曝光的元素
     </Exposure>
-</Playground>
+```
 
 #### 元素在可视区域内单次曝光
 
 说明：在该元素出现在视窗时才对该元素进行曝光，且只会曝光一次
 
-<Playground>
-   { 
-       () => {
-        
-        return <Exposure 
-            mode={['viewonce']}
-            digData={{
-                evt: 200000,
-                evtParams: {
-                    event: 'ItemExpo',
-                    uicode: '元素UIcode',
-                },
-                actionParams: {
-                    special: '元素可视区域内曝光'
-                }
-            }}
-        >
-            此处放入将被曝光的元素
-        </Exposure>
-    }
-    }
-</Playground>
+``` javascript
+<Exposure 
+    mode={['viewonce']}
+    digData={{
+        evt: 200000,
+        evtParams: {
+            event: 'ItemExpo',
+            uicode: '元素UIcode',
+        },
+        actionParams: {
+            special: '元素可视区域内曝光'
+        }
+    }}
+>
+    此处放入将被曝光的元素
+</Exposure>
+
+```
 
 #### 元素出现在可视区域内的次数曝光
 
@@ -160,50 +147,50 @@ getAllParams(evtParams = {}, sourceParams = {}) {
 统计发送的时机是该元素被销毁时发送，会在evtParams增加次数字段。
 
 
-<Playground>
-    {
-        () => {
-        class Demo extends React.Component {
-            constructor(props) {
-                super(props);
-                this.state = {
-                    show: true,
-                };
-            }
-            render() {
-                return (
-                     <div>
-                            {
-                                this.state.show ? <Exposure 
-                                    mode={['view']}
-                                    digData={{
-                                        evt: 200000,
-                                        evtParams: {
-                                            event: 'ItemExpo',
-                                            uicode: '元素UIcode',
-                                        },
-                                        actionParams: {
-                                            special: '元素出现在可视区曝光'
-                                        }
-                                    }}
-                                >
-                                    此处放入将被曝光的元素
-                                </Exposure> 
-                                : '注意观察控制台的action参数'
-                            }
-                        <button onClick={() => {
-                            this.setState({show: !this.state.show})}
-                        }>
-                            点我查看曝光次数
-                        </button>
-                    </div>
-                )
-            }
+``` javascript
+{
+    () => {
+    class Demo extends React.Component {
+        constructor(props) {
+            super(props);
+            this.state = {
+                show: true,
+            };
         }
-        return <Demo />
+        render() {
+            return (
+                 <div>
+                        {
+                            this.state.show ? <Exposure 
+                                mode={['view']}
+                                digData={{
+                                    evt: 200000,
+                                    evtParams: {
+                                        event: 'ItemExpo',
+                                        uicode: '元素UIcode',
+                                    },
+                                    actionParams: {
+                                        special: '元素出现在可视区曝光'
+                                    }
+                                }}
+                            >
+                                此处放入将被曝光的元素
+                            </Exposure> 
+                            : '注意观察控制台的action参数'
+                        }
+                    <button onClick={() => {
+                        this.setState({show: !this.state.show})}
+                    }>
+                        点我查看曝光次数
+                    </button>
+                </div>
+            )
         }
     }
-</Playground>
+    return <Demo />
+    }
+}
+```
 
 #### 元素渲染的时长
 
@@ -211,7 +198,7 @@ getAllParams(evtParams = {}, sourceParams = {}) {
 
 统计发送的时机是该元素被销毁时发送，会在evtParams增加时间参数，单位为秒。
 
-<Playground>
+``` javascript
     {
         () => {
         class Demo2 extends React.Component {
@@ -254,14 +241,14 @@ getAllParams(evtParams = {}, sourceParams = {}) {
         return <Demo2 />
         }
     }
-</Playground>
+```
 
 
 #### 元素进入视区后到销毁的时长
 
 说明：统计该元素从可视状态后到销毁的时长，统计发送的时机是该元素被销毁时发送，会在evtParams增加时间参数，单位为秒。
 
-<Playground>
+``` javascript
     {
         () => {
         class Demo3 extends React.Component {
@@ -303,14 +290,14 @@ getAllParams(evtParams = {}, sourceParams = {}) {
         return <Demo3 />
         }
     }
-</Playground>
+```
 
 
 #### 混合使用
 
 说明：统计元素曝光 + 该元素渲染到销毁的时长
 
-<Playground>
+``` javascript
     {
         () => {
         class Demo3 extends React.Component {
@@ -353,8 +340,7 @@ getAllParams(evtParams = {}, sourceParams = {}) {
         return <Demo3 />
         }
     }
-</Playground>
-
+```
 
 ### 其他
 
