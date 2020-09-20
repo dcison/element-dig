@@ -1,0 +1,20 @@
+{
+    "name": "元素曝光埋点组件",
+    "version": "1.2.0",
+    "description": "基于HOC的元素曝光组件",
+    "scripts": {
+       
+    },
+    "author": "Dcison",
+    "license": "ISC",
+    "peerDependencies": {
+        "react": "^16.13.1"
+    },
+    "dependencies": {
+        "intersection-observer": "^0.11.0",
+        "prop-types": "^15.7.2"
+    },
+    "devDependencies": {
+        "semver": "^7.3.2"
+    }
+}
